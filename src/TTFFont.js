@@ -9,6 +9,7 @@ import TTFGlyph from './glyph/TTFGlyph';
 import CFFGlyph from './glyph/CFFGlyph';
 import SBIXGlyph from './glyph/SBIXGlyph';
 import COLRGlyph from './glyph/COLRGlyph';
+import CBDTGlyph from './glyph/CBDTGlyph';
 import GlyphVariationProcessor from './glyph/GlyphVariationProcessor';
 import TTFSubset from './subset/TTFSubset';
 import CFFSubset from './subset/CFFSubset';
@@ -407,6 +408,9 @@ export default class TTFFont {
     if (!this._glyphs[glyph]) {
       if (this.directory.tables.sbix) {
         this._glyphs[glyph] = new SBIXGlyph(glyph, characters, this);
+
+	  } else if ((this.directory.tables.CBLC) && (this.directory.tables.CBDT)) {
+		this._glyphs[glyph] = new CBDTGlyph(glyph, characters, this);
 
       } else if ((this.directory.tables.COLR) && (this.directory.tables.CPAL)) {
         this._glyphs[glyph] = new COLRGlyph(glyph, characters, this);

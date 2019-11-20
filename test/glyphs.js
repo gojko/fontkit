@@ -165,6 +165,41 @@ describe('glyphs', function() {
     });
   });
 
+  describe('CBDT glyphs', function() {
+    const font = fontkit.openSync(__dirname + '/data/NotoColorEmoji/NotoColorEmoji.ttf');
+
+    it('should get a CBDTGlyph', function() {
+      const glyph = font.glyphsForString('😜')[0];
+      return assert.equal(glyph.constructor.name, 'CBDTGlyph');
+    });
+	it('should look up a valid bitmap size table', () => {
+      const glyph = font.glyphsForString('😜')[0];
+	  const table = glyph.getBitmapSizeTable(32);
+      return assert.equal(table.numberOfIndexSubTables, table.indexSubTableArray.length);
+	});
+    it('should have an empty path', function() {
+      let glyph = font.glyphsForString('😜')[0];
+      return assert.equal(glyph.path.toSVG(), 'M0 2048ZM2055 -7Z');
+    });
+
+    it('should get an image', function() {
+      let glyph = font.glyphsForString('😜')[0];
+      let image = glyph.getImageForSize(32);
+      return assert.deepEqual(image, {
+        originX: 0,
+        originY: 0,
+        type: 'png ',
+        data: image.data
+      });
+    });
+
+    it('should get the glyph name', function() {
+      let glyph = font.glyphsForString('😜')[0];
+      return assert.equal(glyph.name, 'stuckouttonguewinkingeye');
+    });
+  });
+
+
   describe('COLR glyphs', function() {
     let font = fontkit.openSync(__dirname + '/data/ss-emoji/ss-emoji-microsoft.ttf');
 
